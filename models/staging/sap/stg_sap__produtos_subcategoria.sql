@@ -7,7 +7,7 @@ with
         select 
              cast(PRODUCTSUBCATEGORYID as int) as pk_produto_subcategoria
             ,cast(PRODUCTCATEGORYID as int) as fk_produto_categoria
-            ,cast(NAME as string) as nome
+            ,cast(NAME as string) as nm_produto_subcategoria
             --,cast(ROWGUID as string) as guia_linha
            --,cast(MODIFIEDDATE as date) as dta_dados
         from fonte_categoria_produtos
