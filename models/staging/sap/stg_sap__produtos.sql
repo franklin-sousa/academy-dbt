@@ -6,8 +6,8 @@ with
     , renomear as (
         select 
               cast(PRODUCTID as int) as pk_produto
-            , cast(PRODUCTSUBCATEGORYID as int) as fk_subcategoria
-            , cast(PRODUCTMODELID as string) as fk_modelo
+            , cast(PRODUCTSUBCATEGORYID as int) as fk_produto_subcategoria
+            , cast(PRODUCTMODELID as string) as fk_produto_modelo
             , cast(NAME as string) as nm_produto
             , cast(PRODUCTNUMBER as string) as cod_produto
             --, cast(MAKEFLAG as string) as makeflag
@@ -29,7 +29,7 @@ with
             --, cast(SELLENDDATE as string) as dta_venda
             --, cast(DISCONTINUEDDATE as string) as dta_discontinuacao
             --, cast(ROWGUID as string) as guid_de_linha
-            --, cast(MODIFIEDDATE as string) as dta_dados
+            --, cast(MODIFIEDDATE as date) as dta_dados
         from fonte_produtos
     )
 select *
