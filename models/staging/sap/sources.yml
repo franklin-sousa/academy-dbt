@@ -43,5 +43,103 @@ sources:
           - name: customerid
             tests:
               - unique
-              - not_null                    
+              - not_null    
+
+      - name: personcreditcard
+        columns:
+          - name: businessentityid
+            tests:
+              - unique
+              - not_null     
+          - name: creditcardid
+            tests:
+              - unique
+              - not_null             
+
+
+      - name: creditcard
+        columns:
+          - name: creditcardid
+            tests:
+              - unique
+              - not_null 
+
+      - name: store
+        columns:
+          - name: businessentityid
+            tests:
+              - unique
+              - not_null     
+          - name: salespersonid
+            tests:
+              - unique
+              - not_null      
+
+      - name: emailaddress
+        columns:
+          - name: businessentityid
+            tests:
+              - unique
+              - not_null     
+          - name: emailaddressid
+            tests:
+              - unique
+              - not_null                  
+
+      - name: personphone
+        columns:
+          - name: businessentityid
+            tests:
+              - unique
+              - not_null  
+
+      - name: phonenumbertype
+        columns:
+          - name: businessentityid
+            tests:
+              - unique
+              - not_null       
+        
+      - name: businessentity
+        columns:
+          - name: businessentityid
+            tests:
+              - unique
+              - not_null     
+
+      - name: businessentityaddress
+        columns:
+          - name: businessentityid
+            tests:
+              - unique
+              - not_null 
+        columns:
+          - name: addressid
+            tests:
+              - unique
+              - not_null            
+   
+      - name: address
+        columns:
+          - name: addressid
+            tests:
+              - unique
+              - not_null  
+
+      - name: stateprovince
+        columns:
+          - name: territoryid
+            tests:
+              - unique
+              - not_null  
+
+      - name: countryregion
+        columns:
+          - name: name
+            tests:
+              - unique
+              - not_null              
+             
+        
+             
               
