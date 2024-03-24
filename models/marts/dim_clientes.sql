@@ -58,13 +58,12 @@ with
     ,endereco_cad as (
         select 
              PK_ADDRESSID
-            ,ENDERECO_1
-            ,ENDERECO2
+            ,stateprovince_id
+            ,endereco_1
+            ,endereco_2
             ,CIDADE
-            ,ESTADO
             ,CD_POSTAL
         from {{ ref('stg_sap__address') }}
-
     )
     ,sigla_estado as (
         select *
@@ -75,10 +74,10 @@ with
              endereco_id.FK_BUSINESS
             ,endereco_negocio_id.*
             ,endereco_cad.PK_ADDRESSID
-            ,endereco_cad.ENDERECO_1 as endereco1
-            ,endereco_cad.ENDERECO2 as endereco2
+            ,endereco_cad.stateprovince_id
+            ,endereco_cad.ENDERECO_1 
+            ,endereco_cad.ENDERECO_2
             ,endereco_cad.CIDADE
-            ,endereco_cad.ESTADO
             ,endereco_cad.CD_POSTAL
         from endereco_id
             inner join endereco_negocio_id on endereco_id.FK_BUSINESS=endereco_negocio_id.FK_BUSINESS 
@@ -89,7 +88,7 @@ with
     ,join_tabelas as (
         select 
              pessoas.FK_BUSINESS
-            ,pessoas.FK_ROWID
+            --,pessoas.FK_ROWID
             ,pessoas.nome
             ,email.email
             ,case when contato_telefone.tp_telefone='celular' then contato_telefone.TELEFONE end as tel_celular

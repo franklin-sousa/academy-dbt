@@ -131,7 +131,15 @@ sources:
           - name: territoryid
             tests:
               - unique
+              - not_null  
+
+      - name: countryregion
+        columns:
+          - name: name
+            tests:
+              - unique
               - not_null              
+             
         
              
               
