@@ -66,24 +66,41 @@ with
         from {{ ref('stg_sap__address') }}
     )
     ,sigla_estado as (
-        select *
+        select 
+             STATEPROVINCE_ID
+            ,TERRITORY_ID
+            ,FK_ROWGUID
+            ,SIGLA_ESTADO 
+            ,SIGLA_PAIS
+            ,NOME as nm_estado
         from {{ ref('stg_sap__stateprovince') }}
+    )
+    ,sigla_pais as (
+        select 
+            CODIGO_PAIS
+            ,NM_PAIS
+        from {{ ref('stg_sap__countryregion') }}
     )
     ,endereco as (
         select 
              endereco_id.FK_BUSINESS
-            ,endereco_negocio_id.*
+            --,endereco_negocio_id.*
             ,endereco_cad.PK_ADDRESSID
             ,endereco_cad.stateprovince_id
             ,endereco_cad.ENDERECO_1 
             ,endereco_cad.ENDERECO_2
             ,endereco_cad.CIDADE
             ,endereco_cad.CD_POSTAL
+            ,sigla_estado.nm_estado
+            ,sigla_estado.SIGLA_PAIS
+            ,NM_PAIS
         from endereco_id
             inner join endereco_negocio_id on endereco_id.FK_BUSINESS=endereco_negocio_id.FK_BUSINESS 
             inner join endereco_cad on endereco_cad.PK_ADDRESSID = endereco_negocio_id.FK_ADDRESS
-        where 1=1
-        and endereco_id.FK_BUSINESS=1
+            inner join sigla_estado on sigla_estado.stateprovince_id = endereco_cad.stateprovince_id
+            inner join sigla_pais on sigla_pais.CODIGO_PAIS=sigla_estado.SIGLA_PAIS
+
+
     )
     ,join_tabelas as (
         select 
@@ -99,4 +116,4 @@ with
            left join contato_telefone on contato_telefone.FK_BUSINESS= pessoas.FK_BUSINESS
     )
 select *
-from sigla_estado --endereco --join_tabelas 
+from endereco --join_tabelas 
