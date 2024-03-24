@@ -102,6 +102,7 @@ with
 
 
     )
+    /*juntado tabelas*/
     ,join_tabelas as (
         select 
              pessoas.FK_BUSINESS
@@ -111,9 +112,17 @@ with
             ,case when contato_telefone.tp_telefone='celular' then contato_telefone.TELEFONE end as tel_celular
             ,case when contato_telefone.tp_telefone='trabalho' then contato_telefone.telefone end tel_trabalho
             ,case when contato_telefone.tp_telefone='casa' then contato_telefone.telefone end tel_casa
+            ,endereco.ENDERECO_1 
+            ,endereco.ENDERECO_2
+            ,endereco.CIDADE
+            ,endereco.CD_POSTAL
+            ,endereco.nm_estado
+            ,endereco.SIGLA_PAIS
+            ,endereco.NM_PAIS
         from pessoas
            left join email on pessoas.FK_BUSINESS=email.FK_BUSINESS
            left join contato_telefone on contato_telefone.FK_BUSINESS= pessoas.FK_BUSINESS
+           left join endereco on endereco.FK_BUSINESS=pessoas.FK_BUSINESS
     )
 select *
-from endereco --join_tabelas 
+from join_tabelas 
