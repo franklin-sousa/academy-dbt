@@ -62,7 +62,18 @@ sources:
           - name: creditcardid
             tests:
               - unique
+              - not_null 
+
+      - name: store
+        columns:
+          - name: businessentityid
+            tests:
+              - unique
               - not_null     
+          - name: salespersonid
+            tests:
+              - unique
+              - not_null                    
             
              
               
