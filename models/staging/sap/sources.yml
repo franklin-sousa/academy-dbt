@@ -4,7 +4,7 @@ sources:
   - name: sap
     description: fonte do ERP da Adventure Works
     database: equatorial
-    schema: dbt_fmachado_aw_sap
+    schema: DBT_FMACHADO_AW_SAP
 
     tables:
       - name: product
@@ -30,7 +30,7 @@ sources:
             tests:
               - unique
               - not_null
-        
+       
 
 
 
