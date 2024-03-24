@@ -73,7 +73,25 @@ sources:
           - name: salespersonid
             tests:
               - unique
-              - not_null                    
+              - not_null      
+
+      - name: emailaddress
+        columns:
+          - name: businessentityid
+            tests:
+              - unique
+              - not_null     
+          - name: emailaddressid
+            tests:
+              - unique
+              - not_null                  
+
+      - name: personphone
+        columns:
+          - name: businessentityid
+            tests:
+              - unique
+              - not_null  
             
              
               

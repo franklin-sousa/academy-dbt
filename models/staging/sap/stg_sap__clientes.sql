@@ -10,10 +10,9 @@ with
     ,cast(PERSONID as int) as  fk_pessoas
     ,cast(STOREID as int) as fk_stored
     ,cast(TERRITORYID as int) as fk_territorio 
-    --,cast(ROWGUID as string) as  
-    --,cast(MODIFIEDDATE as string) as  
+    ,cast(ROWGUID as string) as fk_rowid
+    --,cast(MODIFIEDDATE as string) as data_dados
 from fonte_clientes
 )
-
-select *
+select * 
 from renomear
