@@ -105,7 +105,20 @@ sources:
           - name: businessentityid
             tests:
               - unique
-              - not_null        
+              - not_null     
+
+      - name: businessentityaddress
+        columns:
+          - name: businessentityid
+            tests:
+              - unique
+              - not_null 
+        columns:
+          - name: addressid
+            tests:
+              - unique
+              - not_null             
+   
             
              
               
