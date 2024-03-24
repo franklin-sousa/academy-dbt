@@ -27,6 +27,7 @@ with
             ,TIPO_TELEFONE
         from {{ ref('stg_sap__phonenumbertype') }}
     )
+    /*montando e classificando numero de telefone*/
     ,contato_telefone as(
         select 
              telefone.FK_BUSINESS
@@ -38,6 +39,52 @@ with
             end tp_telefone
         from telefone
             left join tipo_telefone on telefone.FK_TIPO_TELEFONE=PK_TIPO_TELEFONE
+    )
+    /*montando endereco*/
+    ,endereco_id as (
+        select 
+             FK_BUSINESS
+            ,FK_ROWID
+        from {{ ref('stg_sap__businessentity') }}
+    )
+    ,endereco_negocio_id as(
+        select 
+             FK_BUSINESS
+            ,FK_ADDRESS
+            ,FK_ADRESSTYPE
+            ,FK_ROWID
+        from {{ ref('stg_sap__businessentityaddress') }}
+    )
+    ,endereco_cad as (
+        select 
+             PK_ADDRESSID
+            ,ENDERECO_1
+            ,ENDERECO2
+            ,CIDADE
+            ,ESTADO
+            ,CD_POSTAL
+        from {{ ref('stg_sap__address') }}
+
+    )
+    ,sigla_estado as (
+        select *
+        from {{ ref('stg_sap__stateprovince') }}
+    )
+    ,endereco as (
+        select 
+             endereco_id.FK_BUSINESS
+            ,endereco_negocio_id.*
+            ,endereco_cad.PK_ADDRESSID
+            ,endereco_cad.ENDERECO_1 as endereco1
+            ,endereco_cad.ENDERECO2 as endereco2
+            ,endereco_cad.CIDADE
+            ,endereco_cad.ESTADO
+            ,endereco_cad.CD_POSTAL
+        from endereco_id
+            inner join endereco_negocio_id on endereco_id.FK_BUSINESS=endereco_negocio_id.FK_BUSINESS 
+            inner join endereco_cad on endereco_cad.PK_ADDRESSID = endereco_negocio_id.FK_ADDRESS
+        where 1=1
+        and endereco_id.FK_BUSINESS=1
     )
     ,join_tabelas as (
         select 
@@ -53,4 +100,4 @@ with
            left join contato_telefone on contato_telefone.FK_BUSINESS= pessoas.FK_BUSINESS
     )
 select *
-from join_tabelas
+from sigla_estado --endereco --join_tabelas 

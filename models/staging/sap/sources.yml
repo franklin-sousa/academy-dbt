@@ -124,7 +124,14 @@ sources:
           - name: addressid
             tests:
               - unique
-              - not_null 
+              - not_null  
+
+      - name: stateprovince
+        columns:
+          - name: territoryid
+            tests:
+              - unique
+              - not_null              
         
              
               
