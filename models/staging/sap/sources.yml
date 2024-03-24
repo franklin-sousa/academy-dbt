@@ -54,6 +54,15 @@ sources:
           - name: creditcardid
             tests:
               - unique
-              - not_null              
+              - not_null             
+
+
+      - name: creditcard
+        columns:
+          - name: creditcardid
+            tests:
+              - unique
+              - not_null     
+            
              
               
