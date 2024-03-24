@@ -1,17 +1,56 @@
 with 
-
-    ,pessoas as (
+    pessoas as (
         select 
              FK_BUSINESS
             ,FK_ROWID
-            ,TIPO_PESSOA
-            ,PRONONE_TRATAMENTO
-            ,PRIMEIRO_NOME
-            ,NOME_DO_MEIO
-            ,SOBRE_NOME
-            ,SUFIXO
+            ,PRIMEIRO_NOME||' '||NOME_DO_MEIO||' '||SOBRE_NOME as nome
         from {{ ref('stg_sap__pessoas') }}
     )
+    ,email as(
+        select 
+             PK_EMAIL
+            ,FK_BUSINESS
+            ,FK_ROWID
+            ,EMAIL
+        from {{ ref('stg_sap__emailaddress') }}
+    )
+    ,telefone as (
+        select 
+             FK_BUSINESS
+            ,TELEFONE
+            ,FK_TIPO_TELEFONE
+        from {{ ref('stg_sap__personphone') }}
+    )
+    ,tipo_telefone as (
+        select 
+             PK_TIPO_TELEFONE
+            ,TIPO_TELEFONE
+        from {{ ref('stg_sap__phonenumbertype') }}
+    )
+    ,contato_telefone as(
+        select 
+             telefone.FK_BUSINESS
+            ,telefone.TELEFONE
+            ,case
+                when tipo_telefone='Cell' then 'celular'
+                when tipo_telefone='Home' then 'casa'
+                when tipo_telefone='Work' then 'trabalho'
+            end tp_telefone
+        from telefone
+            left join tipo_telefone on telefone.FK_TIPO_TELEFONE=PK_TIPO_TELEFONE
+    )
+    ,join_tabelas as (
+        select 
+             pessoas.FK_BUSINESS
+            ,pessoas.FK_ROWID
+            ,pessoas.nome
+            ,email.email
+            ,case when contato_telefone.tp_telefone='celular' then contato_telefone.TELEFONE end as tel_celular
+            ,case when contato_telefone.tp_telefone='trabalho' then contato_telefone.telefone end tel_trabalho
+            ,case when contato_telefone.tp_telefone='casa' then contato_telefone.telefone end tel_casa
+        from pessoas
+           left join email on pessoas.FK_BUSINESS=email.FK_BUSINESS
+           left join contato_telefone on contato_telefone.FK_BUSINESS= pessoas.FK_BUSINESS
+    )
 select *
-from pessoas
-     inner join clientes on pessoas.FK_ROWID=clientes.FK_ROWID
+from join_tabelas

@@ -98,7 +98,14 @@ sources:
           - name: businessentityid
             tests:
               - unique
-              - not_null               
+              - not_null       
+        
+      - name: businessentity
+        columns:
+          - name: businessentityid
+            tests:
+              - unique
+              - not_null        
             
              
               
