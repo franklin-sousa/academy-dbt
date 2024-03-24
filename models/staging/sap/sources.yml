@@ -43,5 +43,17 @@ sources:
           - name: customerid
             tests:
               - unique
-              - not_null                    
+              - not_null    
+
+      - name: personcreditcard
+        columns:
+          - name: businessentityid
+            tests:
+              - unique
+              - not_null     
+          - name: creditcardid
+            tests:
+              - unique
+              - not_null              
+             
               
