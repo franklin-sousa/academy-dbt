@@ -92,6 +92,13 @@ sources:
             tests:
               - unique
               - not_null  
+
+      - name: phonenumbertype
+        columns:
+          - name: businessentityid
+            tests:
+              - unique
+              - not_null               
             
              
               
