@@ -7,7 +7,7 @@ with
         select 
              cast(BUSINESSENTITYID as int) as BUSINESSENTITY_ID
             ,cast(CREDITCARDID as int) as CREDITCARD_ID
-            ,cast(MODIFIEDDATE  as date) as data_dados  
+            --,cast(MODIFIEDDATE  as date) as data_dados  
         from fonte_personcreditcard
 
     )

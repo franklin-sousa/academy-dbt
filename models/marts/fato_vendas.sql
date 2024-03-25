@@ -45,10 +45,16 @@ with
             ,MES_FIM_CARTAO
             ,ANO_FIM_CARTAO
         from {{ ref('stg_sap__creditcardid') }}
+    ),
+    cartao_cred_pessoal as (
+        select 
+             BUSINESSENTITY_ID
+            ,CREDITCARD_ID
+        from {{ ref('stg_sap__personcreditcard') }}
     )
     ,clientes as (
         select 
-            FK_BUSINESS
+             FK_BUSINESS
             ,NOME
             ,EMAIL
             ,TEL_CELULAR
@@ -66,6 +72,7 @@ with
     ,joined_tabelas as (
         select 
              ordens.SALESORDER_ID
+            ,cartao_cred_pessoal.BUSINESSENTITY_ID
             ,ordens.CUSTOMER_ID
             ,ordens.SALESPERSON_ID
             ,ordens.TERRITORY_ID
@@ -91,6 +98,18 @@ with
             ,ordens_detalhes.QTD_PEDIDO
             ,ordens_detalhes.PRECO_UNITARIO
             ,ordens_detalhes.DESCONTO_UNITARIO
+            ,clientes.NOME
+            ,clientes.EMAIL
+            ,clientes.TEL_CELULAR
+            ,clientes.TEL_TRABALHO
+            ,clientes.TEL_CASA
+            ,clientes.ENDERECO_1
+            ,clientes.ENDERECO_2
+            ,clientes.CIDADE
+            ,clientes.CD_POSTAL
+            ,clientes.NM_ESTADO
+            ,clientes.SIGLA_PAIS
+            ,clientes.NM_PAIS
             ,cartao_credito.TIPO_CARTAO
             ,cartao_credito.NUMERO_CARTAO
             ,cartao_credito.MES_FIM_CARTAO
@@ -98,6 +117,9 @@ with
         from ordens_detalhes
             left join ordens on ordens.SALESORDER_ID=ordens_detalhes.SALESORDER_ID
             left join cartao_credito on ordens.CREDITCARD_ID=cartao_credito.CREDITCARD_ID
+            left join cartao_cred_pessoal on cartao_cred_pessoal.CREDITCARD_ID = cartao_credito.CREDITCARD_ID
+            left join clientes on clientes.FK_BUSINESS = cartao_cred_pessoal.BUSINESSENTITY_ID
+
     )
 select *
 from joined_tabelas
