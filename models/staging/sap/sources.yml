@@ -56,7 +56,6 @@ sources:
               - unique
               - not_null             
 
-
       - name: creditcard
         columns:
           - name: creditcardid
@@ -138,7 +137,19 @@ sources:
           - name: name
             tests:
               - unique
-              - not_null              
+              - not_null     
+
+      - name: salesorderheader
+        columns:
+          - name: salesorderid
+            tests:
+              - unique
+              - not_null      
+
+      - name: salesorderdetail
+       
+       
+                                
              
         
              
