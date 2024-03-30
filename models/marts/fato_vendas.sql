@@ -1,4 +1,5 @@
 with
+    /*pedidos*/
     ordens as (
         select 
              SALESORDER_ID
@@ -37,6 +38,30 @@ with
             ,DESCONTO_UNITARIO
         from {{ ref('stg_sap__salesorderdetail') }}
     )
+    /*motivo das vendas*/
+    ,base_motivo_vendas as (
+        select 
+             SALESORDER_ID
+            ,SALESREASON_ID
+        from {{ ref('stg_sap__salesorderheadersalesreason') }}
+    )
+    ,base_tipo_motivo_vendas as (
+        select 
+             SALESREASON_ID
+            ,NM_MOTIVO_VENDA
+            ,MOTIVO
+        from {{ ref('stg_sap__salesreason') }}
+    )
+    ,motivo_venda as (
+        select 
+             base_motivo_vendas.SALESORDER_ID
+            ,base_motivo_vendas.SALESREASON_ID
+            ,base_tipo_motivo_vendas.NM_MOTIVO_VENDA
+            ,base_tipo_motivo_vendas.MOTIVO
+        from base_motivo_vendas
+            inner join base_tipo_motivo_vendas on base_motivo_vendas.SALESREASON_ID = base_tipo_motivo_vendas.SALESREASON_ID
+    )
+    /*clientes*/
     ,clientes as (
         select 
              BUSINESSENTITY_ID
@@ -60,6 +85,7 @@ with
             ,NM_PAIS
         from {{ ref('dim_clientes2') }}
     )
+    /*produtos*/
     ,produtos as (
         select 
              PK_PRODUTO as PRODUCT_ID
@@ -103,6 +129,7 @@ with
             ,ordens_detalhes.PRECO_UNITARIO
             ,ordens_detalhes.DESCONTO_UNITARIO
             ,ordens_detalhes.PRECO_UNITARIO*ordens_detalhes.QTD_PEDIDO as total_produto
+            ,motivo_venda.nm_motivo_venda
             ,clientes.PRIMEIRO_NOME
             ,clientes.NOME_DO_MEIO
             ,clientes.SOBRE_NOME
@@ -125,6 +152,7 @@ with
             left join ordens_detalhes  on ordens.SALESORDER_ID=ordens_detalhes.SALESORDER_ID
             left join clientes on clientes.CREDITCARD_ID=ordens.CREDITCARD_ID
             left join produtos on produtos.PRODUCT_ID=ordens_detalhes.PRODUCT_ID
+            left join motivo_venda on ordens.SALESORDER_ID=motivo_venda.SALESORDER_ID
             
 
     )
@@ -136,6 +164,6 @@ select
     --,sum(total_devido)
 from joined_tabelas
 where 1=1
-and SALESORDER_ID=43659
+--and SALESORDER_ID=43659
 
 
