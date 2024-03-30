@@ -1,4 +1,5 @@
 with 
+    /*produtos*/
     produtos as (
         select   
               pk_produto
