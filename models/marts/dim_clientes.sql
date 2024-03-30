@@ -104,19 +104,36 @@ with
     )
     ,pessoas_cartao_credito as (
         select 
-            BUSINESSENTITY_ID
-            ,CREDITCARD_    ID
+             cast(BUSINESSENTITYID as int) as BUSINESSENTITY_ID
+            ,cast(CREDITCARDID as int) as CREDITCARD_ID
         from {{ source('sap', 'personcreditcard') }}
+    )
+    ,dados_cartao_credito as (
+        select 
+             cast(CREDITCARDID as int) as CREDITCARD_ID
+            ,cast(CARDTYPE as string) as banadeira_cartao
+            ,cast(CARDNUMBER as string) as numero_cartao
+            ,cast(EXPMONTH as int) as mes_validade_cartao
+            ,cast(EXPYEAR as int) as ano_validade_cartao
+        from {{ source('sap', 'creditcard') }}
     )
     ,cartao_credito as (
         select 
-            *
-        from {{ source('sap', 'creditcard') }}
+             pessoas_cartao_credito.BUSINESSENTITY_ID
+            ,dados_cartao_credito.CREDITCARD_ID
+            ,dados_cartao_credito.banadeira_cartao
+            ,dados_cartao_credito.numero_cartao
+            ,dados_cartao_credito.mes_validade_cartao
+            ,dados_cartao_credito.ano_validade_cartao
+        from pessoas_cartao_credito
+            inner join dados_cartao_credito on pessoas_cartao_credito.CREDITCARD_ID=dados_cartao_credito.CREDITCARD_ID
     )
+
     /*juntado tabelas*/
     ,join_tabelas as (
         select 
              pessoas.FK_BUSINESS
+            ,cartao_credito.CREDITCARD_ID
             --,pessoas.FK_ROWID
             ,pessoas.nome
             ,email.email
@@ -130,10 +147,16 @@ with
             ,endereco.nm_estado
             ,endereco.SIGLA_PAIS
             ,endereco.NM_PAIS
+            ,cartao_credito.banadeira_cartao
+            ,cartao_credito.numero_cartao
+            ,cartao_credito.mes_validade_cartao
+            ,cartao_credito.ano_validade_cartao
         from pessoas
            left join email on pessoas.FK_BUSINESS=email.FK_BUSINESS
            left join contato_telefone on contato_telefone.FK_BUSINESS= pessoas.FK_BUSINESS
            left join endereco on endereco.FK_BUSINESS=pessoas.FK_BUSINESS
+           left join cartao_credito on cartao_credito.BUSINESSENTITY_ID=pessoas.FK_BUSINESS
     )
 select *
 from join_tabelas 
+where CREDITCARD_ID=1045
