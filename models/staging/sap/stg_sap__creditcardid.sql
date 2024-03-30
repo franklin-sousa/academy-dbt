@@ -8,8 +8,8 @@ with
              cast(CREDITCARDID as int) as CREDITCARD_ID
             ,cast(CARDTYPE as string) as tipo_cartao
             ,cast(CARDNUMBER as string) as numero_cartao
-            ,cast(EXPMONTH as int) as mes_fim_cartao
-            ,cast(EXPYEAR as int) as ano_fim_cartao
+            ,cast(EXPMONTH as int) as mes_validade_cartao
+            ,cast(EXPYEAR as int) as ano_validade_cartao
             --,cast(MODIFIEDDATE as date) as 
         from fonte_creditcard
     )
