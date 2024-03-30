@@ -38,8 +38,36 @@ with
         from {{ ref('stg_sap__salesorderdetail') }}
     )
     ,clientes as (
-        select *
-        from {{ ref('dim_clientes') }}
+        select 
+             BUSINESSENTITY_ID
+            ,CREDITCARD_ID
+            ,PRIMEIRO_NOME
+            ,NOME_DO_MEIO
+            ,SOBRE_NOME
+            ,TIPO_CARTAO
+            ,NUMERO_CARTAO
+            ,MES_VALIDADE_CARTAO
+            ,ANO_VALIDADE_CARTAO
+            ,EMAIL
+            ,TELEFONE_TRABALHO
+            ,TELEFONE_RESIDENCIAL
+            ,TELEFONE_CELULAR
+            ,ENDERECO_1
+            ,ENDERECO_2
+            ,NM_CIDADE
+            ,NM_PROVINCIA
+            ,SIGLA_PROVINCIA
+            ,NM_PAIS
+        from {{ ref('dim_clientes2') }}
+    )
+    ,produtos as (
+        select 
+             PK_PRODUTO as PRODUCT_ID
+            ,NM_PRODUTO
+            ,COD_PRODUTO
+            ,NM_PRODUTO_SUBCATEGORIA
+            ,NM_PRODUTO_CATEGORIA
+        from {{ ref('dim_produtos') }}
     )
    
     ,joined_tabelas as (
@@ -67,13 +95,36 @@ with
             ,ordens.FRETE
             ,ordens.TOTAL_DEVIDO
             ,ordens_detalhes.NUMERO_RASTREAMENTO
+            ,produtos.NM_PRODUTO
+            ,produtos.COD_PRODUTO
+            ,produtos.NM_PRODUTO_SUBCATEGORIA
+            ,produtos.NM_PRODUTO_CATEGORIA
             ,ordens_detalhes.QTD_PEDIDO
             ,ordens_detalhes.PRECO_UNITARIO
             ,ordens_detalhes.DESCONTO_UNITARIO
             ,ordens_detalhes.PRECO_UNITARIO*ordens_detalhes.QTD_PEDIDO as total_produto
+            ,clientes.PRIMEIRO_NOME
+            ,clientes.NOME_DO_MEIO
+            ,clientes.SOBRE_NOME
+            ,clientes.TIPO_CARTAO
+            ,clientes.NUMERO_CARTAO
+            ,clientes.MES_VALIDADE_CARTAO
+            ,clientes.ANO_VALIDADE_CARTAO
+            ,clientes.EMAIL
+            ,clientes.TELEFONE_TRABALHO
+            ,clientes.TELEFONE_RESIDENCIAL
+            ,clientes.TELEFONE_CELULAR
+            ,clientes.ENDERECO_1
+            ,clientes.ENDERECO_2
+            ,clientes.NM_CIDADE
+            ,clientes.NM_PROVINCIA
+            ,clientes.SIGLA_PROVINCIA
+            ,clientes.NM_PAIS
             
         from ordens 
             left join ordens_detalhes  on ordens.SALESORDER_ID=ordens_detalhes.SALESORDER_ID
+            left join clientes on clientes.CREDITCARD_ID=ordens.CREDITCARD_ID
+            left join produtos on produtos.PRODUCT_ID=ordens_detalhes.PRODUCT_ID
             
 
     )
@@ -84,5 +135,7 @@ select
     --,sum(frete)
     --,sum(total_devido)
 from joined_tabelas
+where 1=1
+and SALESORDER_ID=43659
 
 

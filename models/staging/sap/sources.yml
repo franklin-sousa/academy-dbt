@@ -144,9 +144,17 @@ sources:
           - name: salesorderid
             tests:
               - unique
-              - not_null      
+              - not_null     
+
+      - name: salesorderheadersalesreason
+        columns:
+          - name: salesorderid
+            tests:
+              - unique
+              - not_null                   
 
       - name: salesorderdetail
+
        
        
                                 
