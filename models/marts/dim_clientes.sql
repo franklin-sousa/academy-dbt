@@ -102,6 +102,17 @@ with
 
 
     )
+    ,pessoas_cartao_credito as (
+        select 
+            BUSINESSENTITY_ID
+            ,CREDITCARD_    ID
+        from {{ source('sap', 'personcreditcard') }}
+    )
+    ,cartao_credito as (
+        select 
+            *
+        from {{ source('sap', 'creditcard') }}
+    )
     /*juntado tabelas*/
     ,join_tabelas as (
         select 

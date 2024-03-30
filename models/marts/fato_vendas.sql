@@ -37,42 +37,14 @@ with
             ,DESCONTO_UNITARIO
         from {{ ref('stg_sap__salesorderdetail') }}
     )
-    ,cartao_credito as (
-        select 
-             CREDITCARD_ID
-            ,TIPO_CARTAO
-            ,NUMERO_CARTAO
-            ,MES_FIM_CARTAO
-            ,ANO_FIM_CARTAO
-        from {{ ref('stg_sap__creditcardid') }}
-    ),
-    cartao_cred_pessoal as (
-        select 
-             BUSINESSENTITY_ID
-            ,CREDITCARD_ID
-        from {{ ref('stg_sap__personcreditcard') }}
-    )
     ,clientes as (
-        select 
-             FK_BUSINESS
-            ,NOME
-            ,EMAIL
-            ,TEL_CELULAR
-            ,TEL_TRABALHO
-            ,TEL_CASA
-            ,ENDERECO_1
-            ,ENDERECO_2
-            ,CIDADE
-            ,CD_POSTAL
-            ,NM_ESTADO
-            ,SIGLA_PAIS
-            ,NM_PAIS
+        select *
         from {{ ref('dim_clientes') }}
     )
+   
     ,joined_tabelas as (
         select 
              ordens.SALESORDER_ID
-            ,cartao_cred_pessoal.BUSINESSENTITY_ID
             ,ordens.CUSTOMER_ID
             ,ordens.SALESPERSON_ID
             ,ordens.TERRITORY_ID
@@ -98,29 +70,19 @@ with
             ,ordens_detalhes.QTD_PEDIDO
             ,ordens_detalhes.PRECO_UNITARIO
             ,ordens_detalhes.DESCONTO_UNITARIO
-            ,clientes.NOME
-            ,clientes.EMAIL
-            ,clientes.TEL_CELULAR
-            ,clientes.TEL_TRABALHO
-            ,clientes.TEL_CASA
-            ,clientes.ENDERECO_1
-            ,clientes.ENDERECO_2
-            ,clientes.CIDADE
-            ,clientes.CD_POSTAL
-            ,clientes.NM_ESTADO
-            ,clientes.SIGLA_PAIS
-            ,clientes.NM_PAIS
-            ,cartao_credito.TIPO_CARTAO
-            ,cartao_credito.NUMERO_CARTAO
-            ,cartao_credito.MES_FIM_CARTAO
-            ,cartao_credito.ANO_FIM_CARTAO
-        from ordens_detalhes
-            left join ordens on ordens.SALESORDER_ID=ordens_detalhes.SALESORDER_ID
-            left join cartao_credito on ordens.CREDITCARD_ID=cartao_credito.CREDITCARD_ID
-            left join cartao_cred_pessoal on cartao_cred_pessoal.CREDITCARD_ID = cartao_credito.CREDITCARD_ID
-            left join clientes on clientes.FK_BUSINESS = cartao_cred_pessoal.BUSINESSENTITY_ID
+            ,ordens_detalhes.PRECO_UNITARIO*ordens_detalhes.QTD_PEDIDO as total_produto
+            
+        from ordens 
+            left join ordens_detalhes  on ordens.SALESORDER_ID=ordens_detalhes.SALESORDER_ID
+            
 
     )
-select *
+select 
+    * 
+    --sum(subtotal)
+    --,sum(imposto)
+    --,sum(frete)
+    --,sum(total_devido)
 from joined_tabelas
+
 
