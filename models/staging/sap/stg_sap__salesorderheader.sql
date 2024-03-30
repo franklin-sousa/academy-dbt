@@ -23,13 +23,15 @@ with
             ,cast(PURCHASEORDERNUMBER as string) as NUMERO_PEDICO_COMPRA
             ,cast(ACCOUNTNUMBER as string) as NUMERO_CONTA 
             ,cast(CREDITCARDAPPROVALCODE as string) as COD_APROVACAO_CARTAO_CREDITO
-            ,cast(SUBTOTAL as string) as SUBTOTAL
-            ,cast(TAXAMT as string) as IMPOSTO
-            ,cast(FREIGHT as string) as FRETE
-            ,cast(TOTALDUE as string) as TOTAL_DEVIDO
+            ,cast(SUBTOTAL as decimal(10,2)) as SUBTOTAL
+            ,round(cast(TAXAMT as decimal(10,4)),2) as IMPOSTO
+            ,round(cast(FREIGHT as decimal(10,4)),2) as FRETE
+            ,round(cast(TOTALDUE as decimal(10,4)),2) as TOTAL_DEVIDO 
             --,cast(ROWGUID as string) as ROW_ID
             --,cast(MODIFIEDDATE as date) as data_dados
         from fonte_salesorderheader
     )
 select *
-from renomear    
+from renomear   
+where 1=1
+and  SALESORDER_ID=43659

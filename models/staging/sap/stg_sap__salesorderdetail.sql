@@ -11,11 +11,13 @@ with
             ,cast(SPECIALOFFERID as int) as SPECIALOFFER_ID            
             ,cast(CARRIERTRACKINGNUMBER as string) as numero_rastreamento
             ,cast(ORDERQTY as int) as qtd_pedido
-            ,UNITPRICE as preco_unitario
-            ,UNITPRICEDISCOUNT as desconto_unitario
+            ,cast(UNITPRICE as decimal(10,2)) as preco_unitario
+            ,cast(UNITPRICEDISCOUNT as decimal(10,2)) as desconto_unitario
             --,cast(ROWGUID as string) as ROWGUID
             --,cast(MODIFIEDDATE as date) as data_dados
         from fonte_salesorderdetail
     )
 select *
 from renomear 
+where 1=1
+and  SALESORDER_ID=43659
