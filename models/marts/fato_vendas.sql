@@ -66,9 +66,7 @@ with
         select 
              BUSINESSENTITY_ID
             ,CREDITCARD_ID
-            ,PRIMEIRO_NOME
-            ,NOME_DO_MEIO
-            ,SOBRE_NOME
+            ,NM_CLIENTE
             ,TIPO_CARTAO
             ,NUMERO_CARTAO
             ,MES_VALIDADE_CARTAO
@@ -130,9 +128,7 @@ with
             ,ordens_detalhes.DESCONTO_UNITARIO
             ,ordens_detalhes.PRECO_UNITARIO*ordens_detalhes.QTD_PEDIDO as total_produto
             ,motivo_venda.nm_motivo_venda
-            ,clientes.PRIMEIRO_NOME
-            ,clientes.NOME_DO_MEIO
-            ,clientes.SOBRE_NOME
+            ,clientes.NM_CLIENTE
             ,clientes.TIPO_CARTAO
             ,clientes.NUMERO_CARTAO
             ,clientes.MES_VALIDADE_CARTAO
