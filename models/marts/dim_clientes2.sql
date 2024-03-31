@@ -4,8 +4,14 @@ with
         select 
              FK_BUSINESS as BUSINESSENTITY_ID
             ,PRIMEIRO_NOME
-            ,NOME_DO_MEIO
-            ,SOBRE_NOME
+            ,case 
+                when NOME_DO_MEIO = null then ' '
+                else NOME_DO_MEIO 
+            end as NOME_DO_MEIO
+            ,case
+                when SOBRE_NOME=null then ' '
+                else SOBRE_NOME
+            end as SOBRE_NOME
             ,SUFIXO
         from {{ ref('stg_sap__pessoas') }}
     )
@@ -127,8 +133,8 @@ with
              pessoas.BUSINESSENTITY_ID
             ,cartao.CREDITCARD_ID
             ,pessoas.PRIMEIRO_NOME
-            ,pessoas.NOME_DO_MEIO
-            ,pessoas.SOBRE_NOME
+            ||' '|| pessoas.NOME_DO_MEIO
+            ||' '|| pessoas.SOBRE_NOME as nm_cliente
             --,pessoas.SUFIXO
             ,cartao.TIPO_CARTAO
             ,cartao.NUMERO_CARTAO
