@@ -1,0 +1,104 @@
+version: 2
+
+models:
+  - name: fato_vendas
+    description: Tabela de fato vendas da Adventure
+    columns:
+      - name: SALESORDER_ID
+        description: Chave estrangeira da tabela para ordens
+      - name: CUSTOMER_ID
+        description: Chave estrangeira da tabela para clientes
+      - name: SALESPERSON_ID
+        description: Chave estrangeira da tabela para vendas
+      - name: TERRITORY_ID
+        description: Chave estrangeira da tabela para territórios
+      - name: BILLTOADDRESS_ID
+        description: Chave estrangeira da tabela para contas
+      - name: SHIPTOADDRESS_ID
+        description: Chave estrangeira da tabela para envio
+      - name: SHIPMETHOD_ID
+        description: Chave estrangeira da tabela para tipo de envio
+      - name: CREDITCARD_ID
+        description: Chave estrangeira da tabela para cartão de crédito
+      - name: CURRENCYRATE_ID
+        description: Chave estrangeira da tabela para conta corrente
+      - name: NUMERO_REVISAO_ORDEM
+        description: Numero de revisão do pedido
+      - name: DATA_ORDEM
+        description: Data da ordem/pedido
+      - name: ANO_MES_DTA_ORDEM
+        description: Ano_mês da ordem/pedido
+      - name: DATA_VENCIMENTO
+        description: Data vencimento da ordem
+      - name: DATA_ENVIO
+        description: Data do envio
+      - name: STATUS
+        description: Status do pedido
+      - name: ONLINE_ORDEM_FLAG
+        description: Flag
+      - name: NUMERO_PEDICO_COMPRA
+        description: Número do pedido de compra
+      - name: NUMERO_CONTA
+        description: Número da conta corrente
+      - name: COD_APROVACAO_CARTAO_CREDITO
+        description: Código de aprovação do cartão de crédito
+      - name: SUBTOTAL
+        description: Subtotal da ordem
+      - name: IMPOSTO
+        description: Valor do imposto
+      - name: FRETE
+        description: Valor do frete
+      - name: TOTAL_DEVIDO
+        description: Total do pedido
+      - name: QTD_PEDIDO
+        description: Quantidade de unidades
+      - name: PRECO_UNITARIO
+        description: Preço unitário
+      - name: DESCONTO_UNITARIO
+        description: Desconto unitário
+      - name: TOTAL_PRODUTO
+        description: Total do produto (valor*qtd_unid)
+      - name: TOTAL_BRUTO
+        description: Valor produto + frete + impostos
+      - name: NUMERO_RASTREAMENTO
+        description: Número de rastreamento
+      - name: NM_PRODUTO
+        description: Nome do produto
+      - name: COD_PRODUTO
+        description: Código do produto
+      - name: NM_PRODUTO_SUBCATEGORIA
+        description: Subcategoria do produto
+      - name: NM_PRODUTO_CATEGORIA
+        description: Categoria do produto
+      - name: NM_MOTIVO_VENDA
+        description: Motivo da venda
+      - name: NM_CLIENTE
+        description: Nome do cliente
+      - name: TIPO_CARTAO
+        description: Bandeira do cartão de crédito
+      - name: NUMERO_CARTAO
+        description: Número do cartão de crédito
+      - name: MES_VALIDADE_CARTAO
+        description: Mês de validade do cartão de crédito
+      - name: ANO_VALIDADE_CARTAO
+        description: Ano de validade do cartão de crédito
+      - name: EMAIL
+        description: Email
+      - name: TELEFONE_TRABALHO
+        description: Contato telefônico do trabalho
+      - name: TELEFONE_RESIDENCIAL
+        description: Contato telefônico residencial
+      - name: TELEFONE_CELULAR
+        description: Contato telefônico móvel
+      - name: ENDERECO_1
+        description: Endereço 1
+      - name: ENDERECO_2
+        description: Endereço 2
+      - name: NM_CIDADE
+        description: Cidade
+      - name: NM_PROVINCIA
+        description: Província/Estado
+      - name: SIGLA_PROVINCIA
+        description: Sigla da província/estado
+      - name: NM_PAIS
+        description: País

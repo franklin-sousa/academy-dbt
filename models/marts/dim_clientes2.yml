@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: dim_clientes2
+    description: Tabela de dimensão clientes da Adventure Works
+    
+    columns:
+      - name: PK_PRODUTO
+        description: Chave primária da tabela para identificação única do produto.
+      - name: FK_PRODUTO_MODELO
+        description: Chave estrangeira da tabela para relacionamento com o modelo do produto.
+      - name: NM_PRODUTO
+        description: Nome do produto.
+      - name: COD_PRODUTO
+        description: Código do produto para identificação.
+      - name: NM_PRODUTO_SUBCATEGORIA
+        description: Subcategoria a qual o produto pertence.
+      - name: NM_PRODUTO_CATEGORIA
+        description: Categoria a qual o produto pertence.
