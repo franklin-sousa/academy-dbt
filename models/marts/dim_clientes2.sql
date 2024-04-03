@@ -11,7 +11,7 @@ with
             ,case
                 when SOBRE_NOME=null then ' '
                 else SOBRE_NOME
-            end as SOBRE_NOME
+             end as SOBRE_NOME
             ,SUFIXO
         from {{ ref('stg_sap__pessoas') }}
     )
@@ -133,8 +133,9 @@ with
              pessoas.BUSINESSENTITY_ID
             ,cartao.CREDITCARD_ID
             ,pessoas.PRIMEIRO_NOME
-            ||' '|| pessoas.NOME_DO_MEIO
-            ||' '|| pessoas.SOBRE_NOME as nm_cliente
+            ,pessoas.NOME_DO_MEIO
+            ,pessoas.SOBRE_NOME
+            ,concat(pessoas.PRIMEIRO_NOME,' ',pessoas.SOBRE_NOME) as nm_cliente
             --,pessoas.SUFIXO
             ,cartao.TIPO_CARTAO
             ,cartao.NUMERO_CARTAO
@@ -162,5 +163,6 @@ select
     *
 from join_tabelas   
 where 1=1
---and BUSINESSENTITY_ID=1
+--and BUSINESSENTITY_ID=1045
+--and CREDITCARD_ID=16281
 

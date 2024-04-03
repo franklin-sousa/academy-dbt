@@ -44,6 +44,7 @@ with
              SALESORDER_ID
             ,SALESREASON_ID
         from {{ ref('stg_sap__salesorderheadersalesreason') }}
+
     )
     ,base_tipo_motivo_vendas as (
         select 
@@ -58,6 +59,7 @@ with
             ,base_motivo_vendas.SALESREASON_ID
             ,base_tipo_motivo_vendas.NM_MOTIVO_VENDA
             ,base_tipo_motivo_vendas.MOTIVO
+            ,row_number() OVER(partition by base_motivo_vendas.SALESORDER_ID ORDER BY base_motivo_vendas.SALESORDER_ID) AS ranking
         from base_motivo_vendas
             inner join base_tipo_motivo_vendas on base_motivo_vendas.SALESREASON_ID = base_tipo_motivo_vendas.SALESREASON_ID
     )
@@ -96,7 +98,7 @@ with
    
     ,joined_tabelas as (
         select 
-             ordens.SALESORDER_ID
+            ordens.SALESORDER_ID
             ,ordens.CUSTOMER_ID
             ,ordens.SALESPERSON_ID
             ,ordens.TERRITORY_ID
@@ -107,6 +109,7 @@ with
             ,ordens.CURRENCYRATE_ID
             ,ordens.NUMERO_REVISAO_ORDEM
             ,ordens.DATA_ORDEM
+            ,extract(year from ordens.DATA_ORDEM)||lpad(extract(month from ordens.DATA_ORDEM),2,'0') as ano_mes_dta_ordem
             ,ordens.DATA_VENCIMENTO
             ,ordens.DATA_ENVIO
             ,ordens.STATUS
@@ -118,15 +121,21 @@ with
             ,ordens.IMPOSTO
             ,ordens.FRETE
             ,ordens.TOTAL_DEVIDO
+            ,ordens_detalhes.QTD_PEDIDO
+            ,ordens_detalhes.PRECO_UNITARIO
+            ,ordens_detalhes.DESCONTO_UNITARIO
+            ,ordens_detalhes.PRECO_UNITARIO*ordens_detalhes.QTD_PEDIDO as total_produto
+            ,round(
+                ((ordens_detalhes.PRECO_UNITARIO*ordens_detalhes.QTD_PEDIDO)
+                    -(ordens_detalhes.DESCONTO_UNITARIO*ordens_detalhes.QTD_PEDIDO))
+                    +(ordens_detalhes.QTD_PEDIDO*(ordens.FRETE/sum(ordens_detalhes.QTD_PEDIDO) over (partition by ordens.SALESORDER_ID)))
+                    +(ordens_detalhes.QTD_PEDIDO*(ordens.IMPOSTO/sum(ordens_detalhes.QTD_PEDIDO) over (partition by ordens.SALESORDER_ID)))
+                ,2)   as total_bruto
             ,ordens_detalhes.NUMERO_RASTREAMENTO
             ,produtos.NM_PRODUTO
             ,produtos.COD_PRODUTO
             ,produtos.NM_PRODUTO_SUBCATEGORIA
             ,produtos.NM_PRODUTO_CATEGORIA
-            ,ordens_detalhes.QTD_PEDIDO
-            ,ordens_detalhes.PRECO_UNITARIO
-            ,ordens_detalhes.DESCONTO_UNITARIO
-            ,ordens_detalhes.PRECO_UNITARIO*ordens_detalhes.QTD_PEDIDO as total_produto
             ,motivo_venda.nm_motivo_venda
             ,clientes.NM_CLIENTE
             ,clientes.TIPO_CARTAO
@@ -144,22 +153,18 @@ with
             ,clientes.SIGLA_PROVINCIA
             ,clientes.NM_PAIS
             
+            
         from ordens 
             left join ordens_detalhes  on ordens.SALESORDER_ID=ordens_detalhes.SALESORDER_ID
             left join clientes on clientes.CREDITCARD_ID=ordens.CREDITCARD_ID
             left join produtos on produtos.PRODUCT_ID=ordens_detalhes.PRODUCT_ID
-            left join motivo_venda on ordens.SALESORDER_ID=motivo_venda.SALESORDER_ID
+            left join motivo_venda on ordens.SALESORDER_ID=motivo_venda.SALESORDER_ID and ranking=1
             
 
     )
 select 
     * 
-    --sum(subtotal)
-    --,sum(imposto)
-    --,sum(frete)
-    --,sum(total_devido)
 from joined_tabelas
 where 1=1
---and SALESORDER_ID=43659
 
 
