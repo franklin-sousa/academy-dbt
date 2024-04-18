@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: dim_cartao_credito
+    description: Tabela de dimensão cartão de crédito da Adventure Works
+    columns:
+      - name: BUSINESSENTITY_ID
+        description: Chave primária da tabela.
+        tests:
+              - unique
+              - not_null
+      - name: CREDITCARD_ID
+        description: Chave primária da tabela.
+      - name: TIPO_CARTAO
+        description: Bandeira do cartão de crédito.
+      - name: NUMERO_CARTAO
+        description: Número do cartão de crédito.
+      - name: MES_VALIDADE_CARTAO
+        description: Mês de validade do cartão de crédito.
+      - name: ANO_VALIDADE_CARTAO
+        description: Ano de validade do cartão de crédito.
