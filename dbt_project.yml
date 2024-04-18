@@ -34,10 +34,8 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   dbt_adveture_works: # <-- Name of the project. If you renamed your project you have to change this as well
     materialized: table
-    # Applies to all files under models/example/
-    example:
-      materialized: table
-
+  staging:
+    materialized: view
 
 seeds:
   dbt_adveture_works: # <-- Name of the project. If you renamed your project you have to change this as well

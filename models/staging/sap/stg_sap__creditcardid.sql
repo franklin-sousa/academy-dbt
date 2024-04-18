@@ -3,7 +3,7 @@ with
         select *
         from {{ source('sap', 'creditcard') }}
     )
-    ,renomear as (
+    , renomear as (
         select 
              cast(CREDITCARDID as int) as CREDITCARD_ID
             ,cast(CARDTYPE as string) as tipo_cartao

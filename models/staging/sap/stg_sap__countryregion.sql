@@ -3,7 +3,7 @@ with
         select *
         from {{ source('sap', 'countryregion') }}
     )
-    ,renomear as (
+    , renomear as (
         select 
             cast(COUNTRYREGIONCODE as string) as codigo_pais
             ,cast(NAME as string) as nm_pais

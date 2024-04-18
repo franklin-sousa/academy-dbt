@@ -3,7 +3,7 @@ with
         select *
         from {{ source('sap', 'salesorderdetail') }}
     )
-    ,renomear as (
+    , renomear as (
         select 
              cast(SALESORDERID as int) as SALESORDER_ID
             ,cast(SALESORDERDETAILID as int) as SALESORDERDETAIL_ID
