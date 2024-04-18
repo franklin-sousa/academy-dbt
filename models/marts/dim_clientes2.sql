@@ -16,13 +16,13 @@ with
         from {{ ref('stg_sap__pessoas') }}
     )
     /*cartoes de crédito*/
-    ,personcreditcard as (
+    , personcreditcard as (
         select 
              BUSINESSENTITY_ID
             ,CREDITCARD_ID
         from {{ ref('stg_sap__personcreditcard') }}
     )
-    ,cartao_credito as (
+    , cartao_credito as (
         select 
              CREDITCARD_ID
             ,TIPO_CARTAO
@@ -31,7 +31,7 @@ with
             ,ANO_VALIDADE_CARTAO
         from {{ ref('stg_sap__creditcardid') }}
     )
-    ,cartao as (
+    , cartao as (
         select 
              personcreditcard.BUSINESSENTITY_ID
             ,personcreditcard.CREDITCARD_ID
@@ -43,7 +43,7 @@ with
             inner join cartao_credito on personcreditcard.CREDITCARD_ID=cartao_credito.CREDITCARD_ID
     )
     /*email*/
-    ,email as (
+    , email as (
         select 
              PK_EMAIL as email_id
             ,FK_BUSINESS as BUSINESSENTITY_ID
@@ -51,14 +51,14 @@ with
         from {{ ref('stg_sap__emailaddress') }}
     )
     /*telefone pessoal*/
-    ,telefone_pessoal as (
+    , telefone_pessoal as (
         select 
              FK_BUSINESS as BUSINESSENTITY_ID
             ,TELEFONE
             ,FK_TIPO_TELEFONE as PHONENUMBERTYPE_ID
         from {{ ref('stg_sap__personphone') }}
     )
-    ,telefone_pessoal_tipo as (
+    , telefone_pessoal_tipo as (
         select 
             PK_TIPO_TELEFONE as PHONENUMBERTYPE_ID
             ,case 
@@ -68,7 +68,7 @@ with
             end as tipo_telefone
         from {{ ref('stg_sap__phonenumbertype') }}
     )
-    ,telefone as (
+    , telefone as (
         select 
              BUSINESSENTITY_ID
             ,TELEFONE
@@ -77,14 +77,14 @@ with
             inner join telefone_pessoal_tipo on telefone_pessoal.PHONENUMBERTYPE_ID=telefone_pessoal_tipo.PHONENUMBERTYPE_ID
     )
     /*endereço*/
-    ,base_endereco_entidade as (
+    , base_endereco_entidade as (
         select 
              FK_BUSINESS as BUSINESSENTITY_ID
             ,FK_ADDRESS as ADDRESS_ID
             ,FK_ADRESSTYPE AS ADDRESSTYPE_ID
         from {{ ref('stg_sap__businessentityaddress') }}
     )
-    ,base_endereco as (
+    , base_endereco as (
         select 
              PK_ADDRESSID as ADDRESS_ID
             ,STATEPROVINCE_ID
@@ -95,7 +95,7 @@ with
             ,LOCALIDADE
         from {{ ref('stg_sap__address') }}
     )
-    ,base_provincia as (
+    , base_provincia as (
         select 
              STATEPROVINCE_ID
             ,TERRITORY_ID
@@ -104,14 +104,14 @@ with
             ,NOME as nm_provincia
         from {{ ref('stg_sap__stateprovince') }}
     )
-    ,base_pais as (
+    , base_pais as (
         select 
              CODIGO_PAIS as COUNTRYREGIONCODE
             ,NM_PAIS
         from {{ ref('stg_sap__countryregion') }}
     )
 
-    ,endereco as (
+    , endereco as (
         select 
              base_endereco_entidade.BUSINESSENTITY_ID
             ,base_endereco.ENDERECO_1
@@ -128,7 +128,7 @@ with
     )
 
     /*join das tabelas*/
-    ,join_tabelas as (
+    , join_tabelas as (
         select 
              pessoas.BUSINESSENTITY_ID
             ,cartao.CREDITCARD_ID

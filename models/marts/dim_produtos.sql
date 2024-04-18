@@ -9,20 +9,20 @@ with
             , cod_produto
         from {{ ref('stg_sap__produtos') }}
     )
-   ,subcategorias as (
+   , subcategorias as (
         select 
              pk_produto_subcategoria
             ,fk_produto_categoria
             ,nm_produto_subcategoria
         from {{ ref('stg_sap__produtos_subcategoria') }}
     )
-    ,categorias as (
+    , categorias as (
         select 
              pk_produto_categoria
             ,nm_produto_categoria
         from {{ ref('stg_sap__produtos_categoria') }}
     )
-    ,joined_subcat_categoria as (
+    , joined_subcat_categoria as (
         select 
              pk_produto_subcategoria
             ,nm_produto_subcategoria
@@ -30,7 +30,7 @@ with
         from subcategorias
              left join categorias on categorias.pk_produto_categoria=subcategorias.fk_produto_categoria
     )
-    ,joined_tabelas as (
+    , joined_tabelas as (
         select 
               produtos.pk_produto
             --, produtos.fk_produto_subcategoria
