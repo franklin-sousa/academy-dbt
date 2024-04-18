@@ -6,9 +6,6 @@ sources:
     database: equatorial
     schema: DBT_FMACHADO_AW_SAP
 
-    staging:
-    materialized: view
-
     tables:
       - name: product
         columns:
