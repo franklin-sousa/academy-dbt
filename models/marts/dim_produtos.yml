@@ -7,6 +7,9 @@ models:
     colums:
       - name: PK_PRODUTO
         description: Chave primária da tabela para identificação única do produto.
+        tests:
+              - unique
+              - not_null
       - name: FK_PRODUTO_MODELO
         description: Chave estrangeira da tabela para relacionamento com o modelo do produto.
       - name: NM_PRODUTO
