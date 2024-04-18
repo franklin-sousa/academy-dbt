@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: dim_localidade
-    description: Tabela de dimensão clientes da Adventure Works
+    description: Tabela de dimensão localidade da Adventure Works
     columns:
       - name: BUSINESSENTITY_ID
         description: Chave primária da tabela.
