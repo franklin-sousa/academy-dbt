@@ -3,7 +3,7 @@ with
         select *
         from {{ source('sap', 'productcategory') }}
     )
-    ,renomear as (
+    , renomear as (
         select 
              cast(PRODUCTCATEGORYID as int) as pk_produto_categoria
             ,cast(NAME as string) as nm_produto_categoria

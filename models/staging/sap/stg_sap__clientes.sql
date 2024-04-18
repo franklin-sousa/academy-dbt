@@ -4,7 +4,7 @@ with
             *
         from {{ source('sap', 'customer') }}
     )
-,renomear as (
+, renomear as (
     select
      cast(CUSTOMERID as int) as pk_clientes 
     ,cast(PERSONID as int) as  fk_pessoas

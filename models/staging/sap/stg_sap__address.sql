@@ -3,7 +3,7 @@ with
         select *
         from {{ source('sap', 'address') }}
     )
-    ,renomear as (
+    , renomear as (
         select 
              cast(ADDRESSID as int) as pk_addressid
             ,cast(STATEPROVINCEID as int) as stateprovince_id

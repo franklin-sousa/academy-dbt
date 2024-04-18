@@ -9,7 +9,7 @@ with
             --,cast(MODIFIEDDATE as string) as data_dados
         from {{ source('sap', 'creditcard') }}
     )
-,renomear as (
+, renomear as (
     select 
 *
      
