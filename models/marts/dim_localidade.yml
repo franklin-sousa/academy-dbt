@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: dim_localidade
+    description: Tabela de dimensão clientes da Adventure Works
+    columns:
+      - name: BUSINESSENTITY_ID
+        description: Chave primária da tabela.
+        tests:
+              - unique
+              - not_null
+      - name: ENDERECO_1
+        description: Primeira parte do enderenço.
+      - name: ENDERECO_2
+        description: Segunda parte do enderenço.
+      - name: NM_CIDADE
+        description: Nome da cidade.
+      - name: SIGLA_PROVINCIA
+        description: Sigla da província.
+      - name: NM_PAIS
+        description: Nome do país.
