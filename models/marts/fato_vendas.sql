@@ -26,7 +26,7 @@ with
             ,TOTAL_DEVIDO
         from {{ ref('stg_sap__salesorderheader') }}
     )
-    ,ordens_detalhes as (
+    , ordens_detalhes as (
         select
              SALESORDER_ID
             ,SALESORDERDETAIL_ID
@@ -39,21 +39,21 @@ with
         from {{ ref('stg_sap__salesorderdetail') }}
     )
     /*motivo das vendas*/
-    ,base_motivo_vendas as (
+    , base_motivo_vendas as (
         select 
              SALESORDER_ID
             ,SALESREASON_ID
         from {{ ref('stg_sap__salesorderheadersalesreason') }}
 
     )
-    ,base_tipo_motivo_vendas as (
+    , base_tipo_motivo_vendas as (
         select 
              SALESREASON_ID
             ,NM_MOTIVO_VENDA
             ,MOTIVO
         from {{ ref('stg_sap__salesreason') }}
     )
-    ,motivo_venda as (
+    , motivo_venda as (
         select 
              base_motivo_vendas.SALESORDER_ID
             ,base_motivo_vendas.SALESREASON_ID
@@ -64,7 +64,7 @@ with
             inner join base_tipo_motivo_vendas on base_motivo_vendas.SALESREASON_ID = base_tipo_motivo_vendas.SALESREASON_ID
     )
     /*clientes*/
-    ,clientes as (
+    , clientes as (
         select 
              BUSINESSENTITY_ID
             ,CREDITCARD_ID
@@ -86,7 +86,7 @@ with
         from {{ ref('dim_clientes2') }}
     )
     /*produtos*/
-    ,produtos as (
+    , produtos as (
         select 
              PK_PRODUTO as PRODUCT_ID
             ,NM_PRODUTO
@@ -96,7 +96,7 @@ with
         from {{ ref('dim_produtos') }}
     )
    
-    ,joined_tabelas as (
+    , joined_tabelas as (
         select 
             ordens.SALESORDER_ID
             ,ordens.CUSTOMER_ID
